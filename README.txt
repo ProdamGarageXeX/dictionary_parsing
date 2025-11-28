@@ -81,7 +81,7 @@ parsing_zones.py — целевая структура JSON (в разработ
   /samples_json  — примеры JSON
 
 /scripts
-  tei2html.ipynb        — конвертация TEI в HTML
+  tei2html.py           — конвертация TEI в HTML
   html2json_demo.py     — базовый парсер HTML в JSON
   html2json_batch.ipynb — парсер HTML в JSON с поддержкой пакетной обработки словарных статей
 
@@ -92,12 +92,3 @@ parsing_zones.py — целевая структура JSON (в разработ
   parsing_zones.py                — целевая структура зон
 
 README.txt            — описание пайплайна
-
--------------
-|ЗАВИСИМОСТИ|
--------------
-
-- pandoc 3.x (https://github.com/jgm/pandoc)
-- Python 3.8+
-- BeautifulSoup4
-- lxml
