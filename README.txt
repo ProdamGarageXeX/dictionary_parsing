@@ -83,7 +83,7 @@ parsing_zones.py — целевая структура JSON (в разработ
 /scripts
   tei2html.py           — конвертация TEI в HTML
   html2json_demo.py     — базовый парсер HTML в JSON
-  html2json_batch.ipynb — парсер HTML в JSON с поддержкой пакетной обработки словарных статей
+  html2json_batch.py    — парсер HTML в JSON с поддержкой пакетной обработки словарных статей
 
 /docs
   Пометы.docx                     — список помет
