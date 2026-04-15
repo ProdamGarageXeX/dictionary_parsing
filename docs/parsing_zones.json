@@ -1,0 +1,22 @@
+{'title_simple':'БЕГ',
+ 'homonym':1,
+ 'title_full':{'title':'БѢГ','date':''},
+ 'title_vars':[{'title':'','date':''}],
+ 'flectional_grammar':['а','у'],
+ 'fixed_grammar':['м.'],
+ 'certain_forms':[{'mark':'пр. ед.','grammar':['в бегѣ', 'на бегу']},{'mark':'им. мн.','grammar':['бѣга','бѣги']}],
+ 'supermeanings':[{'number':0,
+                   'meanings':[{'number':1,
+                                'meaning':'Быстрое движение, передвижение (человека, животного).',
+                                'remarks':[],
+                                'examples':[{'text':'<Всадники> на самом рѣском бѣгѣ перескакивали с одноя лошади на другую.','source':'Арг. II 593.'},
+                                {'text':'Ничто не удерживало его бѣгу: острейшия каменья ни мало его тогда не устрашили.','source':'Карита 25.'},
+                                {'text':'Легкую в бѣгу он серну Мог настичь.','source':'Рдщв СС I 71'}],
+                                'marked_examples':[{'marks':['rhombus'],'expression':'Ha (всем) бегу.','meaning':'','remarks':[],'text':'На всем бѣгу наклонясь подхватил камень.','source':'САР1 I 415'},
+                                {'marks':['rhombus'],'expression':'Бе́гом', 'meaning':'','remarks':[],'text':'Бѣгом, погонею догнати, достигнути.','source':'ВЛ 172.'},
+                                ]
+                                },
+                                {'number':2}]}],
+'lexicons':[{'entry':'','lexicon':''}],
+'cf.':['','','']                               
+}
