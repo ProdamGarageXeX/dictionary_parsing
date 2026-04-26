@@ -264,8 +264,8 @@ def process_html_file(html_path, output_dir):
     return processed
 
 if __name__ == "__main__":
-    input_dir  = r"F:\ILS\sources_html_tags"
-    output_base_dir = r"F:\ILS\outputv2"
+    input_dir  = r"F:\dictionary_parsing\data\sources_html_tags"
+    output_base_dir = r"F:\dictionary_parsing\data\samples_html\Output_1-23_html"
 
     if not os.path.exists(input_dir):
         print("Входная директория не найдена:", input_dir)
