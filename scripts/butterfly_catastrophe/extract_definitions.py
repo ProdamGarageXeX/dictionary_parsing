@@ -2,8 +2,8 @@ from bs4 import BeautifulSoup, NavigableString, Tag
 import re
 import json
 
-ROMAN_RE = re.compile(r'^[IVXLCDM]+\.$')
-ARABIC_RE = re.compile(r'^\d+\.$')
+ROMAN_RE = re.compile(r'^[IVXLCDM]+\.?$')
+ARABIC_RE = re.compile(r'^\d+\.?$')
 LETTER_RE = re.compile(r'[A-Za-zА-Яа-яЁё]')
 HEADWORD_RE = re.compile(r'^[А-ЯЁ][А-Яа-яЁё́\-]+,$')
 
@@ -76,10 +76,10 @@ def read_marker(segments, i):
         candidate = re.sub(r'\s+', '', buf)
 
         if ROMAN_RE.fullmatch(candidate):
-            return ("roman", candidate[:-1], j + 1)
+            return ("roman", candidate.rstrip('.'), j + 1)
 
         if ARABIC_RE.fullmatch(candidate):
-            return ("arabic", candidate[:-1], j + 1)
+            return ("arabic", candidate.rstrip('.'), j + 1)
 
         j += 1
 
@@ -267,4 +267,44 @@ def extract_definitions(filename: str):
 
     result["groups"] = cleaned_groups
     return result
+
+import os
+import glob
+
+def process_files(input_dir, output_dir):
+    """
+    Обрабатывает все HTML файлы в подпапках input_dir и сохраняет результаты в output_dir.
+    """
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+        
+    html_files = glob.glob(os.path.join(input_dir, "**", "*.html"), recursive=True)
+    print(f"Найдено {len(html_files)} HTML файлов для обработки.")
+    
+    processed_count = 0
+    for filepath in html_files:
+        try:
+            result = extract_definitions(filepath)
+            if result:
+                filename = os.path.basename(filepath)
+                json_filename = os.path.splitext(filename)[0] + '.json'
+                output_filepath = os.path.join(output_dir, json_filename)
+                
+                with open(output_filepath, 'w', encoding='utf-8-sig') as f:
+                    json.dump(result, f, ensure_ascii=False, indent=4)
+                processed_count += 1
+        except Exception as e:
+            pass # ignore parse errors for now
+            
+    print(f"Успешно обработано {processed_count} файлов.")
+
+if __name__ == "__main__":
+    INPUT_DIR = r'F:\dictionary_parsing\data\samples_html\Output_1-23_html'
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    OUTPUT_DIR = os.path.join(SCRIPT_DIR, 'output')
+    
+    print(f"Входная папка: {INPUT_DIR}")
+    print(f"Выходная папка: {OUTPUT_DIR}")
+    
+    process_files(INPUT_DIR, OUTPUT_DIR)
 
