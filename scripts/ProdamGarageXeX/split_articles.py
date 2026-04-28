@@ -186,10 +186,10 @@ def create_html_page(headword, content_html):
 </body>
 </html>"""
 
-def process_html_file(html_path, output_dir):
+def process_html_file(html_path, output_dir, print_fn=print):
     os.makedirs(output_dir, exist_ok=True)
 
-    print(f"Reading {html_path}...")
+    print_fn(f"Reading {html_path}...")
     with open(html_path, 'r', encoding='utf-8') as f:
         soup = BeautifulSoup(f, 'html.parser')
 
@@ -198,7 +198,7 @@ def process_html_file(html_path, output_dir):
         word_section = soup.find('body')
 
     if not word_section:
-        print(f"Skipping {html_path} - no body or WordSection1 found")
+        print_fn(f"Skipping {html_path} - no body or WordSection1 found")
         return 0
 
     paragraphs = word_section.find_all('p')
@@ -244,7 +244,7 @@ def process_html_file(html_path, output_dir):
         safe_filename = sanitize_filename(headword)
 
         # Добавляем порядковый номер статьи
-        safe_filename = f"{idx}_{safe_filename}"
+        safe_filename = f"{idx:04}_{safe_filename}"
 
         # Обработка дублей
         if safe_filename in filename_counts:
