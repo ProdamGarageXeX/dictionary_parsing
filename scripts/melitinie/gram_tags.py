@@ -15,7 +15,7 @@ GRAMMAR_TAGS = [
     "прош.", "р.", "разделит.", "род.", "сказ.", "собир.", "собств.",
     "сов.", "соединит.", "соотносит.", "сопоставит.", "ср.", "сравн.",
     "сравнит.", "страд.", "субст.", "сущ.", "тв.", "указ.", "усилит.",
-    "условн.", "уступит.", "ч.", "числ.", "кн.-слав."
+    "условн.", "уступит.", "ч.", "числ.", "кн.-слав.", "союз.", "част."
 ]
 
 tags_pattern = "|".join(map(re.escape, GRAMMAR_TAGS))
@@ -25,8 +25,8 @@ PATTERN_POMETA = rf"(?<!\()(?<![А-Яа-яЁёA-Za-z\-])({tags_pattern})(?![А-�
 
 class UniversalCorpusParser:
     def __init__(self):
-        self.re_roman = re.compile(r'^(I{1,3}|IV|V|VI{0,3}|IX|X)\.')
-        self.re_arabic = re.compile(r'^\d+\.')
+        self.re_roman = re.compile(r'^(I{1,3}|IV|V|VI{0,3}|IX|X)\.?$')
+        self.re_arabic = re.compile(r'^\d+\.?$')
 
     def _extract_text_and_styles(self, html_node):
         full_text = ""
@@ -124,15 +124,18 @@ class UniversalCorpusParser:
                     clean_marker = bold_marker.replace('́', '').strip('.,')
 
                     # 1. Заголовочное слово
-                    if clean_marker.isupper() and len(clean_marker) > 1 and not self.re_roman.match(clean_marker + '.'):
-                        current_article = {
-                            "headword": bold_marker,
-                            "main_pomety": [],
-                            "sections": [],
-                            "derivatives": []
-                        }
-                        dictionary_data.append(current_article)
-                        current_node = current_article["main_pomety"]
+                    if clean_marker.isupper() and len(clean_marker) > 1 and not self.re_roman.match(clean_marker):
+                        if not current_article or current_article["sections"] or current_article["derivatives"]:
+                            current_article = {
+                                "headwords": [bold_marker],
+                                "main_pomety": [],
+                                "sections": [],
+                                "derivatives": []
+                            }
+                            dictionary_data.append(current_article)
+                            current_node = current_article["main_pomety"]
+                        else:
+                            current_article["headwords"].append(bold_marker)
 
                     # 2. Сохраняем логику разделов (1., 2., I., II.)
                     elif self.re_roman.match(bold_marker) or self.re_arabic.match(bold_marker):
@@ -162,86 +165,42 @@ class UniversalCorpusParser:
 if __name__ == "__main__":
     import os
     import json
+    import glob
     
-    # Базовая директория с папками выпусков
-    base_dir = r'C:\Users\Admin\Documents\dictionary\Output_1-19_html'
-    
-    all_results = []
-    total_files = 0
-    processed_files = 0
-    errors = []
-    
-    print("Обработка всех html-файлов в директории")
-    print(f"Базовая директория: {base_dir}\n")
-    
-    parser = UniversalCorpusParser()
-    
-    # Обходим все подпапки и файлы
-    for root, dirs, files in os.walk(base_dir):
-        for file in files:
-            if file.endswith('.html') or file.endswith('.htm'):
-                total_files += 1
-                file_path = os.path.join(root, file)
-                volume_name = os.path.basename(root)  
+    def process_files(input_dir, output_dir):
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+            
+        html_files = glob.glob(os.path.join(input_dir, "**", "*.html"), recursive=True)
+        print(f"Найдено {len(html_files)} HTML файлов для обработки.")
+        
+        parser = UniversalCorpusParser()
+        processed_count = 0
+        
+        for filepath in html_files:
+            try:
+                with open(filepath, 'r', encoding='utf-8') as f:
+                    html = f.read()
                 
-                try:
-                    with open(file_path, 'r', encoding='utf-8') as f:
-                        html = f.read()
+                result = parser.parse(html)
+                if result:
+                    filename = os.path.basename(filepath)
+                    json_filename = os.path.splitext(filename)[0] + '.json'
+                    output_filepath = os.path.join(output_dir, json_filename)
                     
-                    result = parser.parse(html)
-                    
-                    # Информация о выпуске и файле
-                    for article in result:
-                        article['volume'] = volume_name
-                        article['source_file'] = file
-                        all_results.append(article)
-                    
-                    processed_files += 1
-                    
-                    
-                    if processed_files % 100 == 0:
-                        print(f"Обработано {processed_files} файлов из {total_files}...")
-                    
-                except Exception as e:
-                    errors.append(f"{file_path}: {e}")
-    
-    # Вывод статистики
-    print(f"Всего найдено HTML-файлов: {total_files}")
-    print(f"Успешно обработано: {processed_files}")
-    print(f"Ошибок: {len(errors)}")
-    
-    if errors:
-        print("\nОшибки:")
-        for err in errors[:10]:  # показываем первые 10 ошибок
-            print(f"  {err}")
-    
-    # Вывод первых 30 результатов в консоль (для ознакомления)
-    print("\n" + "=" * 70)
-    print("ПРИМЕРЫ РЕЗУЛЬТАТОВ (первые 30):")
-    print("=" * 70)
-    
-    for i, article in enumerate(all_results[:30]):
-        print(f"\n{i+1}. [Выпуск: {article['volume']}] СЛОВО: {article['headword']}")
-        
-        main_pomety_str = ", ".join(article['main_pomety']) if article['main_pomety'] else "не найдены"
-        print(f"   ОСНОВНЫЕ ПОМЕТЫ: {main_pomety_str}")
-        
-        if article.get('sections'):
-            print("   ЗНАЧЕНИЯ (РАЗДЕЛЫ):")
-            for sec in article['sections']:  
-                sec_pomety_str = ", ".join(sec['pomety']) if sec['pomety'] else "не найдены"
-                print(f"     └ {sec['id']} -> {sec_pomety_str}")
-        
-        if article.get('derivatives'):
-            print("   ПРОИЗВОДНЫЕ СЛОВА:")
-            for deriv in article['derivatives']:
-                deriv_pomety_str = ", ".join(deriv['pomety']) if deriv['pomety'] else "не найдены"
-                print(f"     └ {deriv['word']} -> {deriv_pomety_str}")
+                    with open(output_filepath, 'w', encoding='utf-8-sig') as f:
+                        json.dump(result, f, ensure_ascii=False, indent=4)
+                    processed_count += 1
+            except Exception as e:
+                pass
+                
+        print(f"Успешно обработано {processed_count} файлов.")
 
+    INPUT_DIR = r'F:\dictionary_parsing\data\samples_html\Output_1-23_html'
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    OUTPUT_DIR = os.path.join(SCRIPT_DIR, 'output')
     
-    # Сохраняем все результаты для просмотра 
-    with open('all_grammar_results.json', 'w', encoding='utf-8') as f:
-        json.dump(all_results, f, ensure_ascii=False, indent=2)
+    print(f"Входная папка: {INPUT_DIR}")
+    print(f"Выходная папка: {OUTPUT_DIR}")
     
-    print(f"Результаты сохранены в all_grammar_results.json")
-    print(f"Всего обработано статей: {len(all_results)}")
+    process_files(INPUT_DIR, OUTPUT_DIR)
