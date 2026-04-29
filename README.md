@@ -59,7 +59,7 @@ dictionary_pipeline.py
    ```bash
    python gui.py
    ```
-   *Подробная документация: (scripts/ulia_pav/README.md)*
+   *[Подробная документация](scripts/ulia_pav/README.md)*
 
 2. **Командная строка:**
    Используйте `dictionary_pipeline.py` для пакетной обработки через аргументы:
