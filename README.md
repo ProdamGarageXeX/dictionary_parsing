@@ -83,7 +83,8 @@ dictionary_pipeline.py
 * `Список_условных_сокращений.docx` — список сокращений  
 * `Указатель_источников_Сл_XVIII_16_04_2025.docx`  
 
-**/scripts** * **/As_hen_ok**: `CollocationPhaseo.py`, `html2json_batch.py`.
+**/scripts** 
+* **/As_hen_ok**: `CollocationPhaseo.py`, `html2json_batch.py`.
 * **/Htotyktoya**: `separate_citations.py`.
 * **/ProdamGarageXeX**: `dynamic_tags.py`, `split.articles.py`, `tei2html.py`.
 * **/SoykaGolubaya**: `titleandtags.py`.
