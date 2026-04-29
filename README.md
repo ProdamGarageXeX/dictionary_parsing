@@ -71,22 +71,22 @@ dictionary_pipeline.py
 
 ## СТРУКТУРА РЕПОЗИТОРИЯ
 
-**/MVP** 
-* `dictionary_pipeline.py` — пайплайн для автоматического парсинга HTML  
-* `gui.py` — графический интерфейс для запуска парсинга  
+**/MVP**
+* ** `dictionary_pipeline.py` — пайплайн для автоматического парсинга HTML  
+* ** `gui.py` — графический интерфейс для запуска парсинга  
 
-**/data** 
-* `/samples_html` — примеры HTML-статей  
-* `/sources_docx_tags` — выпуски в формате docx  
-* `/sources_html_tags` — выпуски в формате html  
+**/data**
+* ** `/samples_html` — примеры HTML-статей  
+* ** `/sources_docx_tags` — выпуски в формате docx  
+* **`/sources_html_tags` — выпуски в формате html  
 
-**/docs** 
-* `parsing_zones.json` — целевая структура зон  
-* `Пометы_замена_на_теги_v3.docx` — графические знаки и их соответствие тегам  
-* `Список_условных_сокращений.docx` — список сокращений  
-* `Указатель_источников_Сл_XVIII_16_04_2025.docx`  
+**/docs**
+* ** `parsing_zones.json` — целевая структура зон  
+* ** `Пометы_замена_на_теги_v3.docx` — графические знаки и их соответствие тегам  
+* ** `Список_условных_сокращений.docx` — список сокращений  
+* ** `Указатель_источников_Сл_XVIII_16_04_2025.docx`  
 
-**/scripts** 
+**/scripts**
 * **/As_hen_ok**: `CollocationPhaseo.py`, `html2json_batch.py`.
 * **/Htotyktoya**: `separate_citations.py`.
 * **/ProdamGarageXeX**: `dynamic_tags.py`, `split.articles.py`, `tei2html.py`.
