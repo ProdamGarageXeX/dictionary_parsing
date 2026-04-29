@@ -46,7 +46,10 @@ BeautifulSoup4
 
 Запуск
 ------
-Через gui.py (Подробная документация: (scripts/ulia_pav/README.md)
+Через gui.py (Подробная документация: [gui.py](/scripts/ulia_pav/README.md))
+```
+python gui.py
+```
 При запуске открывается окно с предустановленными путями из dictionary_pipeline.DEFAULT_INPUT_DIR и DEFAULT_OUTPUT_DIR.
 
 
