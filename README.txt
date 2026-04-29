@@ -71,24 +71,90 @@ parsing_zones.py — целевая структура JSON (в разработ
 Базовый парсер работает, полный парсинг зон в разработке.
 
 
+------------------------------------------------------------------------------------
+DICTIONARY_PIPELINE.PY
+------------------------------------------------------------------------------------
+Скрипт представляет собой комплексный пайплайн для автоматического парсинга HTML-файлов словарных статей. Он извлекает информацию из HTML-файлов и сохраняет её в формате JSON. 
+
+Структура скрипта
+-----------------
+dictionary_pipeline.py
+├── Конфигурационные константы
+├── HTML-парсер (RichHTMLParser) # разбор форматирования
+├── Функции обработки текста 
+├── Извлечение информации из заголовков
+├── Разбор определений и значений
+├── Выделение грамматических помет
+├── Обработка смысловых кластеров
+├── Внешние модули (цитаты, коллокации, этимология)
+└── Основной пайплайн (build_article_json) # сборка JSON
+
+Конфигурационные константы
+--------------------------
+PROJECT_ROOT — корневая директория проекта
+DEFAULT_INPUT_DIR — папка с входными HTML-файлами 
+DEFAULT_OUTPUT_DIR — папка для выходных JSON-файлов
+
+Внешние модули
+--------------
+separate_citations.py — извлечение цитат и ссылок на источники
+CollocationPhaseo.py — извлечение цитат и ссылок на источники
+find_etymologies_in_pipeline.py — извлечение цитат и ссылок на источники
+dynamic_tags.py — извлечение цитат и ссылок на источники
+
+Зависимости
+-----------
+Python 3.8+
+BeautifulSoup4
+Библиотеки: html, json, re, pathlib, argparse, functools, glob, typing
+
+
+
 ---------------------
 СТРУКТУРА РЕПОЗИТОРИЯ
 ---------------------
+/MVP
+  dictionary_pipeline.py
+  gui.py
 
 /data
-  /source        — примеры исходных DOCX
   /samples_html  — примеры HTML-статей
-  /samples_json  — примеры JSON
-
-/scripts
-  tei2html.py           — конвертация TEI в HTML
-  html2json_demo.py     — базовый парсер HTML в JSON
-  html2json_batch.py    — парсер HTML в JSON с поддержкой пакетной обработки словарных статей
+  /sources_docx_tags
+  /sources_html_tags
 
 /docs
-  Пометы.docx                     — список помет
+  parsing_zones.json — целевая структура зон
+  slovar_russkogo_yazyka_18_veka_pravila_polzovaniya_ukazatel_istochnikov.pdf
+  Пометы_замена_на_теги_v3.docx — графические знаки и соответствующие им теги
   Список_условных_сокращений.docx — список сокращений
-  Тест_символов.html  	          — тест отображения символов
-  parsing_zones.py                — целевая структура зон
+  Указатель_источников_Сл_XVIII_16_04_2025.docx
+
+/scripts
+  /As_hen_ok
+    CollocationPhaseo.py
+    html2json_batch.py    — парсер HTML в JSON с поддержкой пакетной обработки словарных статей
+  /Htotyktoya
+    separate_citations.py
+  /ProdamGarageXeX 
+    dynamic_tags.py
+    split.articles.py
+    tei2html.py           — конвертация TEI в HTML
+  /SoykaGolubaya
+    titleandtags.py
+  /almighty_architect
+    separate_citations.py
+  /butterfly_catastrophe
+    extract_definitions.py
+    html2json_demo.py     — базовый парсер HTML в JSON
+  /melitinie
+    gram_tags.py
+  /pedrobirq
+    find_etymologies.py
+    find_etymologies_in_pipeline.py
+  /ulia_pav
+    /up-homonyms
+      extract_sup_articles.py
+  /vewsqu
+    gram_tags.py
 
 README.txt            — описание пайплайна
