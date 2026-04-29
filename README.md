@@ -58,13 +58,13 @@ python gui.py
 СТРУКТУРА РЕПОЗИТОРИЯ
 ---------------------
 /MVP
-  dictionary_pipeline.py — пайплайн для автоматического парсинга HTML 
-  gui.py — графический интерфейс для запуска парсинга 
+dictionary_pipeline.py — пайплайн для автоматического парсинга HTML 
+gui.py — графический интерфейс для запуска парсинга 
 
 /data
-  /samples_html — примеры HTML-статей
-  /sources_docx_tags — выпуски в формате docx
-  /sources_html_tags — выпуски в формате html
+/samples_html — примеры HTML-статей
+/sources_docx_tags — выпуски в формате docx
+/sources_html_tags — выпуски в формате html
 
 /docs
   parsing_zones.json — целевая структура зон
